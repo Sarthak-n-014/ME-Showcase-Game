@@ -59,10 +59,40 @@
         function handleSubmit(event) {
             event.preventDefault();
             if (checkSelection()) {
+                const name = document.getElementById('name').value;
+                const selectedPolicies = [];
+                const checkboxes = document.querySelectorAll('input[name="policies"]:checked');
+                checkboxes.forEach(checkbox => {
+                    selectedPolicies.push(checkbox.value.split('|')[0]);
+                });
                 const score = calculateScore();
+                saveData(name, score, selectedPolicies);
                 const url = `result.html?score=${score}`;
                 window.location.href = url;
             }
+        }
+
+        function saveData(name, score, selectedPolicies) {
+            const url = 'https://script.google.com/macros/s/AKfycbzCIIFZ4NDK-H8SEqLXrXc7yoqG9AIqabvA0kVwgP7gmfPUg18TS4WpzZF84U8F_hUN/exec';
+            fetch(url, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    name: name,
+                    score: score,
+                    selectedPolicies: selectedPolicies
+                })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', function() {
