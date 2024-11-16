@@ -72,27 +72,32 @@
             }
         }
 
-        function saveData(name, score, selectedPolicies) {
-            const url = 'https://script.google.com/macros/s/AKfycbzCIIFZ4NDK-H8SEqLXrXc7yoqG9AIqabvA0kVwgP7gmfPUg18TS4WpzZF84U8F_hUN/exec';
-            fetch(url, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    name: name,
-                    score: score,
-                    selectedPolicies: selectedPolicies
-                })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Success:', data);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
+        async function saveData(name, score, selectedPolicies) {
+            const url = 'YOUR_GOOGLE_APPS_SCRIPT_DEPLOYMENT_URL';
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Access-Control-Allow-Origin': '*'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        score: score,
+                        selectedPolicies: selectedPolicies
+                    })
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const responseData = await response.json();
+                console.log('Data sent to Google Sheets successfully:', responseData);
+
+            } catch (error) {
+                console.error('Error sending data to Google Sheets:', error);
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
