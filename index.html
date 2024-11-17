@@ -73,12 +73,12 @@
         }
 
         async function saveData(name, score, selectedPolicies) {
-            const url = 'YOUR_GOOGLE_APPS_SCRIPT_DEPLOYMENT_URL';
+            const url = 'https://script.google.com/macros/s/AKfycbw55L0Im6Oj8n-sHwrZfRSs7rhffPAUz1yXnUW7TvikwTBndYsHBFybcWkEy3whYU-3/exec';
             try {
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
-                        'Content-Type': 'application/json'
+                        'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
                         name: name,
